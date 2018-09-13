@@ -1,17 +1,19 @@
 <template>
-  <div class="hello">
-    <div class="block">
-      <li v-for="item in pageData">{{item.name}}</li>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page.sync="currentPage"
-        :page-size="pageSize"
-        layout="prev, pager, next, jumper"
-        :total="listNum">
-      </el-pagination>
-    </div>
+<div class="content">
+  <div class="list_content">
+    <li v-for="item in pageData" :key="item.id">{{item.name}}</li>
   </div>
+  <div class="block">
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage"
+      :page-size="pageSize"
+      layout="prev, pager, next, jumper"
+      :total="listNum">
+    </el-pagination>
+  </div>
+</div>
 </template>
 
 <script>
@@ -21,10 +23,10 @@ export default {
     return {
       msg: 'Welcome to Your Vue.js App',
       currentPage: 1, //当前页
-      pageSize:5,     //每页设置数量
+      pageSize:10,     //每页设置数量
       listNum:1,      //分页总条数
       listData: [
-        {id: 1, name: 11},
+        {id: 1, name: '今天只做一件事'},
         {id: 2, name: 12},
         {id: 3, name: 13},
         {id: 4, name: 14},
@@ -76,21 +78,27 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-@width:80%;
-  .block{
-    margin-top:20px;
-    li{
-      width:@width;
-      height:150px;
-      border:1px solid #ccc;
-      margin-bottom:5px;
-      text-align:center;
-      line-height:150px;
-      margin:10px auto;
+  @width:1200px;
+  .content{
+    width: @width;
+    margin: 0 auto;
+    .list_content{
+      background-color: #FFF;
+      margin-top: 30px;
+      li{
+        height:65px;
+        border-bottom:1px solid #EBEBEB;
+        margin-bottom:5px;
+        text-align:center;
+        line-height:65px;
+      }
     }
-    .el-pagination{
-      text-align:center;
-      margin-top: 20px;
+    .block{
+      margin-top:20px;
+      .el-pagination{
+        text-align:center;
+        margin-top: 20px;
+      }
     }
   }
 </style>
