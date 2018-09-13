@@ -11,7 +11,7 @@
           </el-col>
           <el-col :span="12">
             <div class="grid-content bg-purple-light">
-              <div style="margin:10px 0 0 15%;width:70%;">
+              <div style="margin:10px 0 10px 15%;width:70%;">
                 <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
                   <el-button slot="append" icon="el-icon-search"></el-button>
                 </el-input>
@@ -36,7 +36,7 @@
         </el-row>
       </el-header>
       <el-main>
-        222
+        <router-view></router-view>
       </el-main>
       <el-footer>
         666
@@ -68,6 +68,9 @@ export default {
 html,body{
   margin: @margin;
   padding: @padding;
+  li{
+    list-style:none;
+  }  
   #app{
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -84,7 +87,7 @@ html,body{
         margin: 0 auto;
       }
       .logo{
-        height: 60px;
+        height: 56px;
       }
     }
     .el-main{
