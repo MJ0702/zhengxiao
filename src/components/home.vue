@@ -40,7 +40,7 @@ export default {
       fullscreenLoading: false,
       msg: 'Welcome to Your Vue.js App',
       currentPage: 1, //当前页
-      pageSize:20,     //每页设置数量
+      pageSize:15,     //每页设置数量
       listNum:1,      //分页总条数
       listData: [
         {id: 1, name: '当你打算怎算好'},
