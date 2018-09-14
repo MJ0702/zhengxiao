@@ -16,7 +16,7 @@
   </div>
   <div class="block">
     <el-pagination
-      element-loading-text="数据加载中,你很急吗？那就等着"
+      element-loading-text="拼命加载中！"
       element-loading-spinner="el-icon-loading"
       element-loading-background="rgba(0, 0, 0, 0.6)"
       v-loading.fullscreen.lock="fullscreenLoading"

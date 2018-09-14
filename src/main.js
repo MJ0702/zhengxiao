@@ -5,6 +5,8 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 
 Vue.config.productionTip = false
 Vue.use(ElementUI)
@@ -16,7 +18,15 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
-//路由切换时返回页面顶部
-router.afterEach((to,from,next) => {
-  window.scrollTo(0,0);
-})
+//跳转路由顶部加载条监听
+router.beforeEach((to, from, next) => {
+	NProgress.start();
+	next()
+});
+router.afterEach(transition => {
+  setTimeout(function() {
+    NProgress.done(); 
+  }, 300);
+  // NProgress.done();
+  window.scrollTo(0,0);  //路由切换时返回页面顶部
+});

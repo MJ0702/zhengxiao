@@ -37,7 +37,7 @@
         </el-row>
       </el-header>
       <el-main>
-        <transition name="slide-fade" mode="out-in">
+        <transition mode="out-in">
           <router-view></router-view>
         </transition>
       </el-main>
@@ -136,16 +136,12 @@ html,body{
     .el-main{
       margin-top: 60px;
       z-index:1;
-      .slide-fade-enter-active {
-        transition: all .3s ease;
-      }
-      .slide-fade-leave-active {
-        transition: all .83 cubic-bezier(1.0, 0.5, 0.8, 1.0);
-      }
-      .slide-fade-enter, .slide-fade-leave-to
-      /* .slide-fade-leave-active for below version 2.1.8 */ {
-          // transform: translateX(10px);
+      .v-enter,.v-leave-to{
         opacity: 0;
+        transform: translateX(800px)
+      }
+      .v-enter-active,.v-leave-active{
+        transition: all 0.3s ease;
       }
     }
     .el-footer{
