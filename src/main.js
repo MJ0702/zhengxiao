@@ -16,3 +16,7 @@ new Vue({
   components: { App },
   template: '<App/>'
 })
+//路由切换时返回页面顶部
+router.afterEach((to,from,next) => {
+  window.scrollTo(0,0);
+})
