@@ -27,6 +27,5 @@ router.afterEach(transition => {
   setTimeout(function() {
     NProgress.done(); 
   }, 300);
-  // NProgress.done();
-  window.scrollTo(0,0);  //路由切换时返回页面顶部
+  // window.scrollTo(0,0);  //路由切换时返回页面顶部
 });

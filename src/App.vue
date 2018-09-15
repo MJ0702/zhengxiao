@@ -44,6 +44,9 @@
       <el-footer>
         <div id="footer">© 2018 zhengxiao</div>
       </el-footer>
+      <div id="toTop">
+        <img src="./assets/toTop.png" title="回到顶部">
+      </div>
     </el-container>
   </div>
 </template>
@@ -58,7 +61,7 @@ export default {
     }else{
       this.activeTab = path;
     }
-    console.log(path);
+    // console.log(path);
   },
   data () {
     return {
@@ -69,16 +72,22 @@ export default {
         {name:'/product',navItem:'产品'},
         {name:'/about',navItem:'关于'},
       ],
-      search: ''
+      search: '',
+      box:''
     }
   },
   methods: {
     handleSelect (key, keyPath) {
-
-
-      console.log(key, keyPath)
+      // console.log(key, keyPath)
     }
-  }
+  },
+  mounted() {
+    // console.log(document.documentElement.scrollTop)
+    // this.box = document.documentElement.scrollTop
+    // if(this.box>100){
+    //   alert('123');
+    // }
+  },
 }
 </script>
 
@@ -138,7 +147,7 @@ html,body{
       z-index:1;
       .v-enter,.v-leave-to{
         opacity: 0;
-        transform: translateX(800px)
+        transform: translateX(800px);
       }
       .v-enter-active,.v-leave-active{
         transition: all 0.3s ease;
@@ -153,6 +162,18 @@ html,body{
         margin:0 auto;
         // min-height:200px;
         padding: 50px 0;
+      }
+    }
+    #toTop{
+      position:fixed;
+      bottom:10%;
+      right:10%;
+      z-index:3;
+      img{
+        cursor:pointer;
+      }
+      img:hover{
+        opacity:0.7;
       }
     }
   }
