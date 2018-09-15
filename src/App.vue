@@ -52,6 +52,7 @@
 </template>
 
 <script>
+
 export default {
   name: 'App',
   created() {
@@ -96,9 +97,7 @@ export default {
     //返回顶部
     toTop(){
       this.$nextTick(() => {
-        setTimeout(() => {
-          window.scrollTo(0,0);
-        }, 300);
+        window.scrollTo(0,0);
       })
     }
   },
