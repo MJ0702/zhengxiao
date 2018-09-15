@@ -44,7 +44,7 @@
       <el-footer>
         <div id="footer">© 2018 zhengxiao</div>
       </el-footer>
-      <div id="toTop">
+      <div id="toTop" v-if="scroll" @click="toTop">
         <img src="./assets/toTop.png" title="回到顶部">
       </div>
     </el-container>
@@ -63,6 +63,9 @@ export default {
     }
     // console.log(path);
   },
+  mounted() {
+    window.addEventListener('scroll', this.handleScroll)
+  },
   data () {
     return {
       activeTab: '/home',
@@ -73,20 +76,34 @@ export default {
         {name:'/about',navItem:'关于'},
       ],
       search: '',
-      box:''
+      scroll:false
     }
   },
   methods: {
     handleSelect (key, keyPath) {
       // console.log(key, keyPath)
+    },
+    //监听scroll事件
+    handleScroll () {
+      let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      // console.log(scrollTop)
+      if(scrollTop>400){
+        this.scroll = true;
+      }else{
+        this.scroll = false;
+      }
+    },
+    //返回顶部
+    toTop(){
+      this.$nextTick(() => {
+        setTimeout(() => {
+          window.scrollTo(0,0);
+        }, 300);
+      })
     }
   },
-  mounted() {
-    // console.log(document.documentElement.scrollTop)
-    // this.box = document.documentElement.scrollTop
-    // if(this.box>100){
-    //   alert('123');
-    // }
+  destroyed () {
+    window.removeEventListener('scroll', this.handleScroll)
   },
 }
 </script>
@@ -166,8 +183,8 @@ html,body{
     }
     #toTop{
       position:fixed;
-      bottom:10%;
-      right:10%;
+      bottom:100px;
+      right:150px;
       z-index:3;
       img{
         cursor:pointer;
