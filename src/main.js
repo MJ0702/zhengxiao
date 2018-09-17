@@ -7,14 +7,17 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
-
+import axios from 'axios'
+import store from './store/store'
 Vue.config.productionTip = false
 Vue.use(ElementUI)
+Vue.prototype.HOST = 'zxiao'
+Vue.prototype.$http = axios
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  router,
+  router,store,
   components: { App },
   template: '<App/>'
 })

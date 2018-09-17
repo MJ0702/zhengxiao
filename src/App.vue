@@ -96,8 +96,10 @@ export default {
       this.$nextTick(() => {
         window.scrollTo(0,0);
       })
-
-    }
+    },
+    // search_Home(){
+    //   search_list();
+    // }
   },
   destroyed () {
     window.removeEventListener('scroll', this.handleScroll)
