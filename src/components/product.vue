@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'intro',
+  name: 'product',
   data () {
     return {
     }
@@ -18,7 +18,7 @@ export default {
 <style scoped lang="less">
   @width:1200px;
   .content{
-    height:1000px;
+    min-height:1000px;
     width: @width;
     margin: 0 auto;
   }

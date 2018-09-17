@@ -1,17 +1,20 @@
 <template>
 <div class="content">
   <div class="list_content">
-    <li v-for="item in pageData" :key="item.id">
-    <div class="list_left">
-    <a href="http://localhost:8080/#/">{{item.name}}</a>
-    </div>
-    <div class="list_right">
-      <el-tag size="small">标签一</el-tag>
-      <el-tag type="success" size="small">标签二</el-tag>
-      <el-tag type="info" size="small">标签三</el-tag>
-      <el-tag type="warning" size="small">标签四</el-tag>
-      <el-tag type="danger" size="small">标签五</el-tag>
-    </div>
+    <router-view></router-view>
+    <li v-for="item in pageData" :key="item.id" @click="detail">
+      <div class="list_left">
+        <router-link to="/home/detail">
+          <div>{{item.name}}</div>
+        </router-link>
+      </div>
+      <div class="list_right">
+        <el-tag size="small">标签一</el-tag>
+        <el-tag type="success" size="small">标签二</el-tag>
+        <el-tag type="info" size="small">标签三</el-tag>
+        <el-tag type="warning" size="small">标签四</el-tag>
+        <el-tag type="danger" size="small">标签五</el-tag>
+      </div>
     </li>
   </div>
   <div class="block">
@@ -103,6 +106,9 @@ export default {
       })
       console.log(`当前页: ${val}`);
     },
+    detail(){
+      console.log(this.$route.path);
+    }
   },
   computed:{
     pageData(){

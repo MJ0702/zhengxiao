@@ -1,12 +1,14 @@
 <template>
 <div class="content">
-  这是简介
+  <div class="list_content">
+  这是详情页
+  </div>
 </div>
 </template>
 
 <script>
 export default {
-  name: 'intro',
+  name: 'detail',
   data () {
     return {
     }
@@ -21,5 +23,9 @@ export default {
     min-height:1000px;
     width: @width;
     margin: 0 auto;
+    .list_content{
+      background-color: #FFF;
+      margin-top: 30px;
+    }
   }
 </style>

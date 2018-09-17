@@ -4,6 +4,7 @@ import home from '@/components/home'
 import intro from '@/components/intro'
 import product from '@/components/product'
 import about from '@/components/about'
+import detail from '@/components/detail'
 Vue.use(Router)
 
 export default new Router({
@@ -27,6 +28,11 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: about
+    },
+    {
+      path:'/home/detail',
+      name:'detail',
+      component:detail
     },
     {
       //重定向

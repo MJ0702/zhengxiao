@@ -57,8 +57,8 @@ export default {
   name: 'App',
   created() {
     let path = this.$route.path;
-    if(path == '/product/secondChild'){
-      this.activeTab = '/product'
+    if(path == '/home/detail'){
+      this.activeTab = '/home'
     }else{
       this.activeTab = path;
     }
@@ -81,9 +81,6 @@ export default {
     }
   },
   methods: {
-    handleSelect (key, keyPath) {
-      // console.log(key, keyPath)
-    },
     //监听scroll事件
     handleScroll () {
       let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
@@ -99,6 +96,7 @@ export default {
       this.$nextTick(() => {
         window.scrollTo(0,0);
       })
+
     }
   },
   destroyed () {
