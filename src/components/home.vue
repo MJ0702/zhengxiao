@@ -1,6 +1,5 @@
 <template>
 <div class="content">
-  {{count}}
   <div class="list_content">
     <router-view></router-view>
     <li v-for="item in pageData" :key="item.id" @click="detail">
@@ -34,18 +33,19 @@
 
 <script>
 // import {search_list} from '../common/request_list.js'
-import state from '@/store/store'
+// import state from '@/store/store'
 import {getPageList} from '@/common/request_list'
 export default {
   name: 'home',
   created() {
     // console.log(this.listData)
-    console.log(this);
     let page_list = this.$store.state.page_list;
-    console.log(page_list);
       page_list.page = 1;
       page_list.rows = 5;
-    this.$store.dispatch('store/store/getPageList', page_list);
+      console.log(page_list);
+    this.$store.commit('change_page_list', {page:1,rows:5});
+    console.log(this);
+    this.$store.dispatch("getPageList");
     // getPageList({params:{page:1,rows:5}})
     // this.$http.get('/zxiao/API/findZxiaoAll',
     //   {params: {
@@ -79,7 +79,7 @@ export default {
   },
   data () {
     return {
-      count: state.state.count,
+      // count: state.state.count,
       fullscreenLoading: false,
       msg: 'Welcome to Your Vue.js App',
       currentPage: 1, //当前页

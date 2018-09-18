@@ -2,60 +2,40 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
 Vue.use(Vuex)
-const state = {  
-    page_list:{
-        page:null,
-        rows:null
+
+export default new Vuex.Store({
+    state : {  
+        page_list:{
+            page:null,
+            rows:null
+        }
+    },
+    getters : {  
+        page_list: page_list => state.page_list
+    },
+    mutations : { 
+        //改变分页数据列表参数
+        change_page_list(state,obj){
+            state.page_list.page = obj.page;
+            state.page_list.rows = obj.rows;
+        }
+    },
+    actions : {  
+        //获取分页数据列表
+        getPageList({ commit, state, getters, rootGetters },callback){
+            axios.get('/zxiao/API/findZxiaoAll', {
+                params: {
+                    page:state.page_list.page,
+                    rows:state.page_list.rows
+                }
+            })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+            //   callback(response);   
+        }
     }
-}
-const getters = {  
-    page_list: page_list => state.page_list
-}
-const actions = {  
-    getPageList({ commit, state, getters, rootGetters },callback){
-        Vue.http.get('/zxiao/API/findZxiaoAll', {
-            params: {
-                page:page_list.page,
-                rows:page_list.row
-            }
-        })
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
-          callback(response);   
-    }
-}
-const mutations = { 
-    change_page_list(state,{page_list}){
-        state.page_list = page_list
-    }
-  }
-  export default {
-    namespaced: true,
-    state,
-    getters,
-    actions,
-    mutations
-  }
-// export default new Vuex.Store({
-//     // 定义列表状态
-//     state: {
-//         list:{
-//             page:1,
-//             rows:5
-//         }
-//     },
-//     actions: {
-//         // 获取列表数据
-//         getPageList (context) {
-//             axios({
-//             method: 'get',
-//             url: '/zxiao/API/findZxiaoAll',
-//             data: context.state.list
-//             })
-//         }
-//     }
-// })
+})
