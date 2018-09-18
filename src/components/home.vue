@@ -28,39 +28,49 @@
       :total="listNum">
     </el-pagination>
   </div>
+  <img v-if="error_show" src="../assets/404.gif">
 </div>
 </template>
 
 <script>
 // import {search_list} from '../common/request_list.js'
 import state from '@/store/store'
+import {getPageList} from '@/common/request_list'
 export default {
   name: 'home',
   created() {
     // console.log(this.listData)
     let that = this;
-    this.$http.get('/zxiao/findAllByPage',
-      {params: {
-        page:1,
-        rows:5
-      }
-    })
-    .then(function (response) {
-      console.log(response);
-      let res = response.data.data.total;
-      let len = parseInt(response.data.data.rows);
-      console.log(len);
-      for(let i = 0;i<res.length;i++){
-        that.listData.push(res[i]);
-        that.listNum = len;
-      }
-      that.page_show = true;
-    })
-    .catch(function (error) {
-      that.page_show = false;
-      console.log(error);
-    });
-    console.log(this)
+    getPageList({params:{page:1,rows:5}})
+    // this.$http.get('/zxiao/findAllByPage',
+    //   {params: {
+    //     page:1,
+    //     rows:5
+    //   }
+    // })
+    // .then(function (response) {
+    //   console.log(response);
+    //   let res = response.data.data.total;
+    //   let len = parseInt(response.data.data.rows);
+    //   for(let i = 0;i<res.length;i++){
+    //     that.listData.push(res[i]);
+    //     that.listNum = len;
+    //   }
+    //   that.page_show = true;
+    // })
+    // .catch(function (error) {
+    //   // console.log(response);
+    //   that.page_show = false;
+    //   if (error.response) {
+    //     // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+    //     if(error.response.status == 404){
+    //       that.error_show = true;
+    //     }
+    //   } else {
+    //     // Something happened in setting up the request that triggered an Error
+    //     console.log('Error', error.message);
+    //   }
+    // });
   },
   data () {
     return {
@@ -70,9 +80,10 @@ export default {
       currentPage: 1, //当前页
       pageSize:5,     //每页设置数量
       listNum:1,      //分页总条数
-      listData: [],
-      page_show:false,
-      demo: this.for
+      listData: [],   //分页数据
+      page_show:false,  //显示页码栏
+      demo: this.for,
+      error_show:false  //404页面
     }
   },
   methods:{
@@ -81,33 +92,42 @@ export default {
         this.fullscreenLoading = true;
         this.page_show = false;
         let that = this;
-        this.$http.get('/zxiao/findAllByPage',{
-          params: {
-            page:val,
-            rows:5
-          }
-        })
-        .then(function (response) {
-          console.log(response);
-          let res = response.data.data.total;
-          let len = parseInt(response.data.data.rows);
-          for(let i = 0;i<res.length;i++){
-            that.listData.push(res[i]);
-            that.listNum = len;
-          }
-          that.fullscreenLoading = false;
-          window.scrollTo(0,0);
-          that.page_show = true;
-        })
-        .catch(function (error) {
-          that.page_show = false;
-          console.log(error);
-        });
+          this.$http.get('/zxiao/findAllByPage',{
+            params: {
+              page:val,
+              rows:5
+            }
+          })
+          .then(function (response) {
+            console.log(response);
+            let res = response.data.data.total;
+            let len = parseInt(response.data.data.rows);
+            for(let i = 0;i<res.length;i++){
+              that.listData.push(res[i]);
+              that.listNum = len;
+            }
+            that.fullscreenLoading = false;
+            window.scrollTo(0,0);
+            that.page_show = true;
+          })
+          .catch(function (error) {
+            // console.log(response);
+            that.page_show = false;
+            if (error.response) {
+              // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+              if(error.response.status == 404){
+                that.error_show = true;
+              }
+            } else {
+              // Something happened in setting up the request that triggered an Error
+              console.log('Error', error.message);
+            }
+          });
         })
       // console.log(`当前页: ${val}`);
     },
     detail(){
-      console.log(this.$route.path);
+      // console.log(this.$route.path);
     }
   },
   computed:{
@@ -131,7 +151,7 @@ export default {
   @width:1200px;
   .content{
     width: @width;
-    margin: 0 auto;
+    margin: 50px auto;
     min-height:550px;
     .list_content{
       background-color: #FFF;

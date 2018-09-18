@@ -5,6 +5,7 @@ import intro from '@/components/intro'
 import product from '@/components/product'
 import about from '@/components/about'
 import detail from '@/components/detail'
+import error from '@/components/error'
 Vue.use(Router)
 
 export default new Router({
@@ -39,6 +40,14 @@ export default new Router({
       path: '/',
       redirect: '/home',
     },
+    {
+      path:'*',
+      component:error,
+      name:'error',
+      meta:{
+        title:'页面没找到'
+      }
+    }
   ],
   scrollBehavior (to, from, savedPosition) {
     return { x: 0, y: 0 }
