@@ -14,7 +14,7 @@ module.exports = {
       '/zxiao':{
         target:'http://www.yame.club',
         changeOrigin:true,
-        pathRewrite: {'^/api':''}
+        pathRewrite: {'^/zxiao':''}
       }
     },
 

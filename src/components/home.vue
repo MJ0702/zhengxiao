@@ -40,9 +40,14 @@ export default {
   name: 'home',
   created() {
     // console.log(this.listData)
-    let that = this;
-    getPageList({params:{page:1,rows:5}})
-    // this.$http.get('/zxiao/findAllByPage',
+    console.log(this);
+    let page_list = this.$store.state.page_list;
+    console.log(page_list);
+      page_list.page = 1;
+      page_list.rows = 5;
+    this.$store.dispatch('store/store/getPageList', page_list);
+    // getPageList({params:{page:1,rows:5}})
+    // this.$http.get('/zxiao/API/findZxiaoAll',
     //   {params: {
     //     page:1,
     //     rows:5
@@ -92,7 +97,7 @@ export default {
         this.fullscreenLoading = true;
         this.page_show = false;
         let that = this;
-          this.$http.get('/zxiao/findAllByPage',{
+          this.$http.get('/zxiao/API/findZxiaoAll',{
             params: {
               page:val,
               rows:5
