@@ -4,10 +4,10 @@
     <h1 v-model="title">{{title}}</h1>
     <el-row>
       <router-link to="/home">
-        <el-button>返回首页</el-button>
+        <el-button size="small" round>返回首页</el-button>
       </router-link>
       <a :href="url" target="_blank">
-        <el-button type="primary">原文链接</el-button>
+        <el-button type="primary" size="small" round style="margin-left:10px">原文链接</el-button>
       </a>
     </el-row>
     <div v-html="content">{{content}}</div>
@@ -55,10 +55,11 @@ export default {
 <style scoped lang="less">
   @width:1200px;
   .content{
-    min-height:1100px;
+    // min-height:1100px;
     width: @width;
     margin: 0 auto;
     .list_content{
+      min-height:700px;
       padding: 60px 100px;
       background-color: #FFF;
       margin-top: 30px;
