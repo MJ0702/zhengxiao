@@ -8,7 +8,8 @@ export default new Vuex.Store({
         page_list:{
             id:localStorage.getItem("id") || null,  //这里使用JSON.parse是因为我localStorage中保存的是一个对象字符串
             page:null,
-            rows:null
+            rows:null,
+            title:''
         },    
     },
     getters : {
@@ -24,6 +25,12 @@ export default new Vuex.Store({
         change_id(state,obj){
             localStorage.setItem('id',obj.id); //将传递的数据先保存到localStorage中
             state.page_list.id = obj.id;
+        },
+        //改变搜索参数
+        change_search_list(state,obj){ 
+            state.page_list.page = obj.page;
+            state.page_list.rows = obj.rows;
+            state.page_list.title = obj.title;
         },
     },
     actions : {  
@@ -41,6 +48,16 @@ export default new Vuex.Store({
             return axios.get('/zxiao/API/zxiao', {
                 params: {
                     id:state.page_list.id
+                }
+            }).then(res => res.data)  //返回异步获得的数据
+        },
+        //根据id查询获取详情页数据
+        getSearchList({ commit, state, getters, rootGetters }){
+            return axios.get('/zxiao/API/zxiao/QueryByTitle', {
+                params: {
+                    page:state.page_list.page,
+                    rows:state.page_list.rows,
+                    title:state.page_list.title
                 }
             }).then(res => res.data)  //返回异步获得的数据
         },

@@ -37,34 +37,7 @@ import state from '@/store/store'
 export default {
   name: 'home',
   created() {
-    // console.log(this.listData)
-    let model = this;
-    // 配置当前页的路由
-    this.$router.push({ path: 'home', query: { page: 1}})
-    //请求分页总数据
-    this.$store.commit('change_page_list', {page:1,rows:10});
-    this.$store.dispatch("getPageList").then(res => {
-      // console.log(res);
-      if(res.code == '1'){
-        let total = res.data.total;
-        let len = parseInt(res.data.rows);
-        for(let i = 0;i<total.length;i++){
-          model.listData.push(total[i]);
-          model.listNum = len;
-        }
-        model.page_show = true;
-      }else{
-        model.page_show = false;
-        if (error.response) {
-          // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-          if(error.response.status == 404){
-              model.error_show = true;
-          }
-        } else {
-          console.log('Error', error.message);
-        }
-      }
-    }) 
+    this.search();
   },
   data () {
     return {
@@ -123,6 +96,43 @@ export default {
       let id = event.currentTarget.id;
       // console.log(id);
       this.$store.commit('change_id', {id:id});
+    },
+    search(){
+      //根据搜索条件渲染分页数据
+      console.log(this);
+      this.$store.dispatch("getSearchList").then(res => {
+        // console.log(res);
+        let model = this;
+        if(res.code == '1'){
+          let total = res.data.total;
+          let len = parseInt(res.data.rows);
+          for(let i = 0;i<total.length;i++){
+            model.listData.push(total[i]);
+            model.listNum = len;
+          }
+          model.page_show = true;
+        }else{
+          model.page_show = false;
+          if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            if(error.response.status == 404){
+                model.error_show = true;
+            }
+          } else {
+            console.log('Error', error.message);
+          }
+        }
+      }) 
+    }
+  },
+  watch:{
+    '$route.query.title':function(newValue,oldValue){
+      console.log(newValue +'--'+oldValue);
+      console.log(newValue!==oldValue);
+      if(newValue!==oldValue){
+        console.log(886);
+        this.search();
+      }
     }
   },
   computed:{
@@ -137,7 +147,7 @@ export default {
       }
       return newList[this.currentPage-1 ]
     }
-  }
+  },
 }
 </script>
 

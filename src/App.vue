@@ -14,8 +14,10 @@
           <el-col :span="24">
             <div class="grid-content bg-purple-light">
               <div class="search_box">
-                <el-input placeholder="请输入内容" v-model="search" class="input-with-select">
-                  <el-button slot="append" icon="el-icon-search"></el-button>
+                <el-input placeholder="请输入内容" v-model="search" class="input-with-select" @keyup.enter.native="searchList">
+                  
+                  <el-button slot="append" icon="el-icon-search" @click="searchList"></el-button>
+                  
                 </el-input>
               </div>
             </div>
@@ -61,7 +63,7 @@ export default {
   name: 'App',
   created() {
     let path = this.$route.path;
-    console.log(path);
+    // console.log(path);
     if(path == '/home/detail'){
       this.activeTab = '/home'
     }if(path == '/home'){
@@ -97,6 +99,22 @@ export default {
       }else{
         this.scroll = false;
       }
+    },
+    //搜索
+    searchList(){
+      let model = this;
+      // console.log(this.search);
+      // if(this.search == ''){
+        // this.$message({
+        //   message: '请输入你要搜索的内容',
+        //   type: 'warning'
+        // });
+        let title = model.search;
+        // this.$router.go('/search');
+        // console.log(model);
+        this.$store.commit('change_search_list', {page:1,rows:10,title:title});
+        this.$router.push({ path: '/search', query: { title: title}})
+      // }  
     },
     //返回顶部
     toTop(){
