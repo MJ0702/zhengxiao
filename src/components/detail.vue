@@ -59,7 +59,7 @@ export default {
     width: @width;
     margin: 0 auto;
     .list_content{
-      min-height:700px;
+      min-height:900px;
       padding: 60px 100px;
       background-color: #FFF;
       margin-top: 30px;
