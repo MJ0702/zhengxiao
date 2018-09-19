@@ -5,7 +5,7 @@
     <li v-for="item in pageData" :key="item.id" @click="detail">
       <div class="list_left">
         <router-link to="/home/detail">
-          <div v-model="item.id">{{item.title}}</div>
+          <div :id="item.id" @click="turn($event)">{{item.title}}</div>
         </router-link>
       </div>
       <div class="list_right">
@@ -27,55 +27,44 @@
       :total="listNum">
     </el-pagination>
   </div>
-  <img v-if="error_show" src="../assets/404.gif">
+  <img v-if="error_show" src="../assets/404.jpg">
 </div>
 </template>
 
 <script>
 // import {search_list} from '../common/request_list.js'
-// import state from '@/store/store'
-import {getPageList} from '@/common/request_list'
+import state from '@/store/store'
 export default {
   name: 'home',
   created() {
     // console.log(this.listData)
-    let page_list = this.$store.state.page_list;
-      page_list.page = 1;
-      page_list.rows = 5;
-      console.log(page_list);
-    this.$store.commit('change_page_list', {page:1,rows:5});
-    console.log(this);
-    this.$store.dispatch("getPageList");
-    // getPageList({params:{page:1,rows:5}})
-    // this.$http.get('/zxiao/API/findZxiaoAll',
-    //   {params: {
-    //     page:1,
-    //     rows:5
-    //   }
-    // })
-    // .then(function (response) {
-    //   console.log(response);
-    //   let res = response.data.data.total;
-    //   let len = parseInt(response.data.data.rows);
-    //   for(let i = 0;i<res.length;i++){
-    //     that.listData.push(res[i]);
-    //     that.listNum = len;
-    //   }
-    //   that.page_show = true;
-    // })
-    // .catch(function (error) {
-    //   // console.log(response);
-    //   that.page_show = false;
-    //   if (error.response) {
-    //     // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-    //     if(error.response.status == 404){
-    //       that.error_show = true;
-    //     }
-    //   } else {
-    //     // Something happened in setting up the request that triggered an Error
-    //     console.log('Error', error.message);
-    //   }
-    // });
+    let model = this;
+    // 配置当前页的路由
+    this.$router.push({ path: 'home', query: { page: 1}})
+    //请求分页总数据
+    this.$store.commit('change_page_list', {page:1,rows:10});
+    this.$store.dispatch("getPageList").then(res => {
+      // console.log(res);
+      if(res.code == '1'){
+        let total = res.data.total;
+        let len = parseInt(res.data.rows);
+        for(let i = 0;i<total.length;i++){
+          model.listData.push(total[i]);
+          model.listNum = len;
+        }
+        model.page_show = true;
+      }else{
+        model.page_show = false;
+        if (error.response) {
+          // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+          if(error.response.status == 404){
+              model.error_show = true;
+          }
+        } else {
+          console.log('Error', error.message);
+        }
+      }
+    }) 
   },
   data () {
     return {
@@ -83,11 +72,10 @@ export default {
       fullscreenLoading: false,
       msg: 'Welcome to Your Vue.js App',
       currentPage: 1, //当前页
-      pageSize:5,     //每页设置数量
+      pageSize:10,     //每页设置数量
       listNum:1,      //分页总条数
       listData: [],   //分页数据
       page_show:false,  //显示页码栏
-      demo: this.for,
       error_show:false  //404页面
     }
   },
@@ -96,43 +84,45 @@ export default {
       this.$nextTick(() => {
         this.fullscreenLoading = true;
         this.page_show = false;
-        let that = this;
-          this.$http.get('/zxiao/API/findZxiaoAll',{
-            params: {
-              page:val,
-              rows:5
+        let model = this;
+        // 配置当前页的路由
+        this.$router.push({ path: 'home', query: { page: val}})
+        //请求当前页的数据
+        this.$store.commit('change_page_list', {page:val,rows:10});
+        this.$store.dispatch("getPageList").then(res => {
+          if(res.code == '1'){
+            let total = res.data.total;
+            let len = parseInt(res.data.rows);
+            for(let i = 0;i<total.length;i++){
+              model.listData.push(total[i]);
+              model.listNum = len;
             }
-          })
-          .then(function (response) {
-            console.log(response);
-            let res = response.data.data.total;
-            let len = parseInt(response.data.data.rows);
-            for(let i = 0;i<res.length;i++){
-              that.listData.push(res[i]);
-              that.listNum = len;
-            }
-            that.fullscreenLoading = false;
+            model.fullscreenLoading = false;
             window.scrollTo(0,0);
-            that.page_show = true;
-          })
-          .catch(function (error) {
-            // console.log(response);
-            that.page_show = false;
+            model.page_show = true;
+          }else{
+            model.page_show = false;
             if (error.response) {
               // 请求已发出，但服务器响应的状态码不在 2xx 范围内
               if(error.response.status == 404){
-                that.error_show = true;
+                  model.error_show = true;
               }
             } else {
-              // Something happened in setting up the request that triggered an Error
               console.log('Error', error.message);
             }
-          });
+          }
         })
+      })
       // console.log(`当前页: ${val}`);
     },
     detail(){
       // console.log(this.$route.path);
+    },
+    turn(event){
+      //获取当前点击的列表项id
+      let id = event.currentTarget.id;
+      // console.log(id);
+      this.$store.commit('change_id', {id:id});
     }
   },
   computed:{
@@ -157,7 +147,7 @@ export default {
   .content{
     width: @width;
     margin: 50px auto;
-    min-height:550px;
+    min-height:850px;
     .list_content{
       background-color: #FFF;
       margin-top: 30px;
