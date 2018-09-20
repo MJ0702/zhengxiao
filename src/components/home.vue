@@ -34,6 +34,7 @@
 <script>
 // import {search_list} from '../common/request_list.js'
 import state from '@/store/store'
+import { mapState } from 'vuex'
 export default {
   name: 'home',
   created() {
@@ -44,7 +45,7 @@ export default {
     //请求分页总数据
     this.$store.commit('change_page_list', {page:1,rows:10});
     this.$store.dispatch("getPageList").then(res => {
-      // console.log(res);
+      console.log(this);
       if(res.code == '1'){
         let total = res.data.total;
         let len = parseInt(res.data.rows);
@@ -121,7 +122,7 @@ export default {
     turn(event){
       //获取当前点击的列表项id
       let id = event.currentTarget.id;
-      // console.log(id);
+      console.log(id);
       this.$store.commit('change_id', {id:id});
     }
   },
@@ -129,6 +130,7 @@ export default {
     pageData(){
       let pages = Math.ceil(this.listData.length/this.pageSize);//8为每页设置数量
       // console.log(this.listData.length);
+      // console.log(925);
       let newList=[];
       for (let i=0;i<pages;i++) {
         let sonList = [];

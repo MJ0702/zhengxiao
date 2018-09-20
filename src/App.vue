@@ -113,7 +113,7 @@ export default {
         // this.$router.go('/search');
         // console.log(model);
         this.$store.commit('change_search_list', {page:1,rows:10,title:title});
-        this.$router.push({ path: '/search', query: { title: title}})
+        this.$store.dispatch("getSearchList")
       // }  
     },
     //返回顶部

@@ -36,9 +36,6 @@
 import state from '@/store/store'
 export default {
   name: 'home',
-  created() {
-    this.search();
-  },
   data () {
     return {
       // count: state.state.count,
@@ -59,32 +56,10 @@ export default {
         this.page_show = false;
         let model = this;
         // 配置当前页的路由
-        this.$router.push({ path: '/home', query: { page: val}})
+        this.$router.push({ path: '/search', query: { title:'我',page: val}})
         //请求当前页的数据
-        this.$store.commit('change_page_list', {page:val,rows:10});
-        this.$store.dispatch("getPageList").then(res => {
-          if(res.code == '1'){
-            let total = res.data.total;
-            let len = parseInt(res.data.rows);
-            for(let i = 0;i<total.length;i++){
-              model.listData.push(total[i]);
-              model.listNum = len;
-            }
-            model.fullscreenLoading = false;
-            window.scrollTo(0,0);
-            model.page_show = true;
-          }else{
-            model.page_show = false;
-            if (error.response) {
-              // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-              if(error.response.status == 404){
-                  model.error_show = true;
-              }
-            } else {
-              console.log('Error', error.message);
-            }
-          }
-        })
+        this.$store.commit('change_search_list', {page:val,rows:10,title:'我'});
+        this.search();
       })
       // console.log(`当前页: ${val}`);
     },
@@ -111,6 +86,9 @@ export default {
             model.listNum = len;
           }
           model.page_show = true;
+          model.fullscreenLoading = false;
+          window.scrollTo(0,0);
+          model.page_show = true;
         }else{
           model.page_show = false;
           if (error.response) {
@@ -131,7 +109,7 @@ export default {
       console.log(newValue!==oldValue);
       if(newValue!==oldValue){
         console.log(886);
-        this.search();
+        // this.search();
       }
     }
   },
@@ -139,6 +117,7 @@ export default {
     pageData(){
       let pages = Math.ceil(this.listData.length/this.pageSize);//8为每页设置数量
       // console.log(this.listData.length);
+      console.log(2525);
       let newList=[];
       for (let i=0;i<pages;i++) {
         let sonList = [];
@@ -147,6 +126,10 @@ export default {
       }
       return newList[this.currentPage-1 ]
     }
+  },
+  mounted() {
+    console.log(99);
+    this.search();
   },
 }
 </script>

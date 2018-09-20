@@ -20,9 +20,8 @@ export default {
   name: 'detail',
   created() {
     console.log(this);
-    // this.$store.commit('change_id', {id:id});
-    this.$store.dispatch("getDetailList").then(res => {
-      // console.log(res);
+      this.$store.dispatch("getDetailList").then(res => {
+        // console.log(res);
       let model = this;
       if(res.code == '1'){
           model.content = res.data.content;
