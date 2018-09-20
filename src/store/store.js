@@ -9,8 +9,14 @@ export default new Vuex.Store({
             id:localStorage.getItem("id") || null,  //这里使用JSON.parse是因为我localStorage中保存的是一个对象字符串
             page:null,
             rows:null,
-            title:localStorage.getItem("title") || '',
-            listData:[]
+            title:'',
+            listData:[],
+            currentPage: 1, //当前页
+            pageSize:10,     //每页设置数量
+            listNum:1,      //分页总条数
+            listData: [],   //分页数据
+            page_show:false,  //显示页码栏
+            error_show:false,  //404页面
         },    
     },
     getters : {
@@ -31,9 +37,24 @@ export default new Vuex.Store({
         change_search_list(state,obj){ 
             state.page_list.page = obj.page;
             state.page_list.rows = obj.rows;
-            // state.page_list.title = obj.title;
-            localStorage.setItem('title',obj.title);
+            state.page_list.title = obj.title;
         },
+        //改变listData
+        change_ListData_list(state,obj){
+            state.page_list.listData = obj;
+        },
+        //改变分页的总数
+        change_page_params(state,listNum){
+            state.page_list.listNum = listNum;
+        }, 
+        //改变分页的当前页
+        change_currentPage_params(state,currentPage){
+            state.page_list.currentPage = currentPage;
+        },
+        //改变搜索内容
+        // change_title_params(state,title){
+        //     state.page_list.title = title;
+        // }
     },
     actions : {  
         //获取分页数据列表
@@ -62,7 +83,7 @@ export default new Vuex.Store({
                     title:state.page_list.title
                 }
             }).then(res => res.data)  //返回异步获得的数据
-            state.page_list.listData == res.data.total;
+            // state.page_list.listData == res.data.total;
         },
     }
 })

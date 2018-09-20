@@ -63,15 +63,11 @@ export default {
   name: 'App',
   created() {
     let path = this.$route.path;
-    // console.log(path);
     if(path == '/home/detail'){
       this.activeTab = '/home'
-    }if(path == '/home'){
-      this.$router.push({ path: 'home', query: { page: 1}})
     }else{
       this.activeTab = path;
     }
-    // console.log(path);
   },
   mounted() {
     window.addEventListener('scroll', this.handleScroll)
@@ -110,10 +106,44 @@ export default {
         //   type: 'warning'
         // });
         let title = model.search;
-        // this.$router.go('/search');
         // console.log(model);
         this.$store.commit('change_search_list', {page:1,rows:10,title:title});
-        this.$store.dispatch("getSearchList")
+        // this.$store.dispatch("getSearchList")
+        this.$store.dispatch("getSearchList").then(res => {
+        // console.log(res);
+        let model = this;
+        var arr = [];
+        if(res.code == '1'){
+          let total = res.data.total;
+          // console.log(res);
+          let len = parseInt(res.data.rows);
+          for(let i = 0;i<total.length;i++){
+            arr.push(total[i]);
+            // model.listNum = len;
+          }
+          this.$router.push({ path: '/home', query: { title:title,page:1}});
+          // this.$store.commit('change_title_params', title);
+          this.$store.commit('change_currentPage_params', 1);
+          this.$store.commit('change_page_params', len);
+          this.$store.commit('change_ListData_list', arr);
+          // model.page_show = true;
+          // console.log(model);
+          // model.fullscreenLoading = false;
+          window.scrollTo(0,0);
+          // model.page_show = true;
+        }else{
+          model.page_show = false;
+          if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            if(error.response.status == 404){
+                model.error_show = true;
+            }
+          } else {
+            console.log('Error', error.message);
+          }
+        }
+      }) 
+        
       // }  
     },
     //返回顶部

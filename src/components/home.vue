@@ -2,7 +2,7 @@
 <div class="content">
   <div class="list_content">
     <router-view></router-view>
-    <li v-for="item in pageData" :key="item.id" @click="detail">
+    <li v-for="item in page_list.listData" :key="item.id">
       <div class="list_left">
         <router-link to="/home/detail">
           <div :id="item.id" @click="turn($event)">{{item.title}}</div>
@@ -20,11 +20,11 @@
       element-loading-background="rgba(0, 0, 0, 0.6)"
       v-loading.fullscreen.lock="fullscreenLoading"
       @current-change="handleCurrentChange"
-      :current-page.sync="currentPage"
+      :current-page.sync="page_list.currentPage"
       :page-size="pageSize"
       layout="prev, pager, next, jumper"
       :background="false"
-      :total="listNum">
+      :total="page_list.listNum">
     </el-pagination>
   </div>
   <img v-if="error_show" src="../assets/404.jpg">
@@ -32,40 +32,19 @@
 </template>
 
 <script>
-// import {search_list} from '../common/request_list.js'
 import state from '@/store/store'
 import { mapState } from 'vuex'
 export default {
   name: 'home',
   created() {
-    // console.log(this.listData)
-    let model = this;
-    // 配置当前页的路由
-    this.$router.push({ path: 'home', query: { page: 1}})
-    //请求分页总数据
-    this.$store.commit('change_page_list', {page:1,rows:10});
-    this.$store.dispatch("getPageList").then(res => {
-      console.log(this);
-      if(res.code == '1'){
-        let total = res.data.total;
-        let len = parseInt(res.data.rows);
-        for(let i = 0;i<total.length;i++){
-          model.listData.push(total[i]);
-          model.listNum = len;
-        }
-        model.page_show = true;
-      }else{
-        model.page_show = false;
-        if (error.response) {
-          // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-          if(error.response.status == 404){
-              model.error_show = true;
-          }
-        } else {
-          console.log('Error', error.message);
-        }
-      }
-    }) 
+    this.$nextTick(() => {
+      let model = this;
+      // 配置当前页的路由
+      this.$router.push({ path: 'home', query: { page: 1}})
+      //请求分页总数据
+      this.$store.commit('change_page_list', {page:1,rows:10});
+      this.chage_page();
+    })
   },
   data () {
     return {
@@ -77,7 +56,7 @@ export default {
       listNum:1,      //分页总条数
       listData: [],   //分页数据
       page_show:false,  //显示页码栏
-      error_show:false  //404页面
+      error_show:false,  //404页面
     }
   },
   methods:{
@@ -85,60 +64,96 @@ export default {
       this.$nextTick(() => {
         this.fullscreenLoading = true;
         this.page_show = false;
-        let model = this;
-        // 配置当前页的路由
-        this.$router.push({ path: '/home', query: { page: val}})
-        //请求当前页的数据
-        this.$store.commit('change_page_list', {page:val,rows:10});
-        this.$store.dispatch("getPageList").then(res => {
-          if(res.code == '1'){
-            let total = res.data.total;
-            let len = parseInt(res.data.rows);
-            for(let i = 0;i<total.length;i++){
-              model.listData.push(total[i]);
-              model.listNum = len;
-            }
-            model.fullscreenLoading = false;
-            window.scrollTo(0,0);
-            model.page_show = true;
-          }else{
-            model.page_show = false;
-            if (error.response) {
-              // 请求已发出，但服务器响应的状态码不在 2xx 范围内
-              if(error.response.status == 404){
-                  model.error_show = true;
-              }
-            } else {
-              console.log('Error', error.message);
-            }
-          }
-        })
+        let title = this.page_list.title;
+        if(title == ''){
+          // 配置当前页的路由
+          this.$router.push({ path: '/home', query: { page: val}});
+          this.$store.commit('change_currentPage_params', val);
+          this.$store.commit('change_page_list', {page:val,rows:10});
+          // console.log(this);
+          this.chage_page();
+        }else{
+          this.$router.push({ path: '/home', query: { title:title,page:val}});
+          this.$store.commit('change_currentPage_params', val);
+          this.$store.commit('change_search_list', {page:val,rows:10,title:title});
+          this.search_chage_page();
+        }
       })
       // console.log(`当前页: ${val}`);
-    },
-    detail(){
-      // console.log(this.$route.path);
     },
     turn(event){
       //获取当前点击的列表项id
       let id = event.currentTarget.id;
       console.log(id);
       this.$store.commit('change_id', {id:id});
-    }
+    },
+    //分页跳转
+    chage_page(){
+      let model = this;
+      let arr = [];
+      this.$store.dispatch("getPageList").then(res => {
+        if(res.code == '1'){
+          let total = res.data.total;
+          let len = parseInt(res.data.rows);
+          for(let i = 0;i<total.length;i++){
+            arr.push(total[i]);   
+          }
+          model.listNum = len;
+          this.$store.commit('change_page_params', len);
+          this.$store.commit('change_ListData_list', arr);
+          model.listData = this.page_list.listData;
+          model.fullscreenLoading = false;
+          window.scrollTo(0,0);
+          model.page_show = true;
+        }else{
+          model.page_show = false;
+          if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            if(error.response.status == 404){
+                model.error_show = true;
+            }
+          } else {
+            console.log('Error', error.message);
+          }
+        }
+      })
+    },
+    //含搜索条件分页跳转
+    search_chage_page(){
+      this.$store.dispatch("getSearchList").then(res => {
+      let model = this;
+      var arr = [];
+        if(res.code == '1'){
+          let total = res.data.total;
+          let len = parseInt(res.data.rows);
+          for(let i = 0;i<total.length;i++){
+            arr.push(total[i]);
+          }
+          model.listNum = len;
+          this.$store.commit('change_page_params', len);
+          this.$store.commit('change_ListData_list', arr);
+          model.listData = this.page_list.listData;
+          model.fullscreenLoading = false;
+          window.scrollTo(0,0);
+          model.page_show = true;
+        }else{
+          model.page_show = false;
+          if (error.response) {
+            // 请求已发出，但服务器响应的状态码不在 2xx 范围内
+            if(error.response.status == 404){
+                model.error_show = true;
+            }
+          } else {
+            console.log('Error', error.message);
+          }
+        }
+      })
+    },
   },
   computed:{
-    pageData(){
-      let pages = Math.ceil(this.listData.length/this.pageSize);//8为每页设置数量
-      // console.log(this.listData.length);
-      // console.log(925);
-      let newList=[];
-      for (let i=0;i<pages;i++) {
-        let sonList = [];
-        sonList = this.listData.slice(i*this.pageSize,i*this.pageSize+this.pageSize);//8为每页设置数量
-        newList.push(sonList)
-      }
-      return newList[this.currentPage-1 ]
-    }
+    ...mapState([
+      'page_list'
+    ])
   }
 }
 </script>
