@@ -99,7 +99,6 @@ export default {
     //搜索
     searchList(){
       let model = this;
-      // console.log(this.search);
       // if(this.search == ''){
         // this.$message({
         //   message: '请输入你要搜索的内容',
@@ -108,10 +107,7 @@ export default {
         let title = model.search;
         // console.log(model);
         this.$store.commit('change_search_list', {page:1,rows:10,title:title});
-        // this.$store.dispatch("getSearchList")
         this.$store.dispatch("getSearchList").then(res => {
-        // console.log(res);
-        let model = this;
         var arr = [];
         if(res.code == '1'){
           let total = res.data.total;
@@ -119,24 +115,27 @@ export default {
           let len = parseInt(res.data.rows);
           for(let i = 0;i<total.length;i++){
             arr.push(total[i]);
-            // model.listNum = len;
+          }
+          if(len == '0'){
+            model.isActive = false;
+            this.$store.commit('change_isActive_params', false);
+          }else{
+            this.$store.commit('change_isActive_params', true);
           }
           this.$router.push({ path: '/home', query: { title:title,page:1}});
           // this.$store.commit('change_title_params', title);
           this.$store.commit('change_currentPage_params', 1);
           this.$store.commit('change_page_params', len);
           this.$store.commit('change_ListData_list', arr);
-          // model.page_show = true;
-          // console.log(model);
-          // model.fullscreenLoading = false;
+          this.$store.commit('change_fullscreenLoading_params',false);
+          this.$store.commit('change_page_show_params',true);
           window.scrollTo(0,0);
-          // model.page_show = true;
         }else{
-          model.page_show = false;
+          this.$store.commit('change_page_show_params',false);
           if (error.response) {
             // 请求已发出，但服务器响应的状态码不在 2xx 范围内
             if(error.response.status == 404){
-                model.error_show = true;
+                this.$store.commit('change_error_show_params',true);
             }
           } else {
             console.log('Error', error.message);
@@ -180,7 +179,7 @@ html,body{
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     // text-align: center;
-    color: #2c3e50;
+    color: #4f4f4f;
     /* margin-top: 60px; */
     .el-header{
       background-color:#303848;

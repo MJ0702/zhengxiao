@@ -6,7 +6,6 @@ import product from '@/components/product'
 import about from '@/components/about'
 import detail from '@/components/detail'
 import error from '@/components/error'
-import search from '@/components/search'
 Vue.use(Router)
 
 export default new Router({
@@ -30,11 +29,6 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: about
-    },
-    {
-      path: '/search',
-      name: 'search',
-      component: search
     },
     {
       path:'/home/detail',

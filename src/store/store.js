@@ -6,22 +6,24 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state : {  
         page_list:{
-            id:localStorage.getItem("id") || null,  //这里使用JSON.parse是因为我localStorage中保存的是一个对象字符串
-            page:null,
-            rows:null,
-            title:'',
-            listData:[],
+            id:localStorage.getItem("id") || null,
+            page:null,    //后端需要参数
+            rows:null,    //后端需要参数
+            title:'',     //搜索标题
+            listData:[],  //列表数据
             currentPage: 1, //当前页
             pageSize:10,     //每页设置数量
             listNum:1,      //分页总条数
             listData: [],   //分页数据
-            page_show:false,  //显示页码栏
+            page_show:true,  //显示页码栏
             error_show:false,  //404页面
+            isActive:true,    //为搜索到内容状态判断
+            fullscreenLoading:false //关闭loading
         },    
     },
-    getters : {
-        page_list: page_list => state.page_list
-    },
+    // getters : {
+    //     page_list: state.page_list => state.page_list
+    // },
     mutations : {
         //改变分页数据列表参数
         change_page_list(state,obj){
@@ -51,10 +53,22 @@ export default new Vuex.Store({
         change_currentPage_params(state,currentPage){
             state.page_list.currentPage = currentPage;
         },
-        //改变搜索内容
-        // change_title_params(state,title){
-        //     state.page_list.title = title;
-        // }
+        //改变分页无数据的样式
+        change_isActive_params(state,isActive){
+            state.page_list.isActive = isActive;
+        },
+        //改变loading加载的状态
+        change_page_show_params(state,page_show){
+            state.page_list.page_show = page_show;
+        },
+        //改变分页栏是否显示状态
+        change_fullscreenLoading_params(state,fullscreenLoading){
+            state.page_list.fullscreenLoading = fullscreenLoading;
+        },
+        //改变404显示效果
+        change_error_show_params(state,error_show){
+            state.page_list.error_show = error_show;
+        }
     },
     actions : {  
         //获取分页数据列表
@@ -83,7 +97,6 @@ export default new Vuex.Store({
                     title:state.page_list.title
                 }
             }).then(res => res.data)  //返回异步获得的数据
-            // state.page_list.listData == res.data.total;
         },
     }
 })

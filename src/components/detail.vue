@@ -3,6 +3,7 @@
   <div class="list_content">
     <h1 v-model="title">{{title}}</h1>
     <el-row>
+      <div>{{publish_time}}</div>
       <router-link to="/home">
         <el-button size="small" round>返回首页</el-button>
       </router-link>
@@ -16,10 +17,11 @@
 </template>
 
 <script>
+import {formatDate} from '../common/date.js';
 export default {
   name: 'detail',
   created() {
-    console.log(this);
+    // console.log(this);
       this.$store.dispatch("getDetailList").then(res => {
         // console.log(res);
       let model = this;
@@ -27,6 +29,8 @@ export default {
           model.content = res.data.content;
           model.url = res.data.url;
           model.title = res.data.title;
+          model.source = res.data.source;
+          model.publish_time = formatDate(new Date(res.data.publish_time),"yyyy-MM-dd");
       }else{
         // model.page_show = false;
         if (error.response) {
@@ -42,9 +46,11 @@ export default {
   },
   data () {
     return {
-        content:'',
-        url:'',
-        title:''
+        content:'',  //正文内容
+        url:'',   //原文链接
+        title:'',  //标题
+        source:'',  //来源
+        publish_time:''
     }
   },
 }
@@ -70,9 +76,16 @@ export default {
       }
       .el-row{
         text-align:right;
-        margin: 30px 10px 30px 0;
+        margin: 60px 10px 60px 0;
+        display:flex;
+        div{
+          text-align:left;         
+          flex:8;
+          line-height:32px;
+        }
         a{
           display:inline-block;
+          flex:1
         }
       }
     }
