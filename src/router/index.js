@@ -9,6 +9,8 @@ import error from '@/components/error'
 Vue.use(Router)
 
 export default new Router({
+  mode:'history',
+  base:'/zhengxiao/',
   routes: [
     {
       path: '/home',
