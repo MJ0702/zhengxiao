@@ -55,7 +55,7 @@ module.exports = {
 
     // Paths  path.resolve(__dirname, '../dist')
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'MyDrivers/zhengxiao/dist/static',
+    assetsSubDirectory: 'static',
     assetsPublicPath: './',
 
     /**
