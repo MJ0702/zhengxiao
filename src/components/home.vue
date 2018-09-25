@@ -165,7 +165,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-  @width:1200px;
+  @width:1100px;
   .content{
     width: @width;
     margin: 50px auto;
