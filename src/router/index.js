@@ -10,7 +10,7 @@ Vue.use(Router)
 
 export default new Router({
   mode:'history',
-  base:'/zhengxiao/',
+  base:__dirname,
   routes: [
     {
       path: '/home',
