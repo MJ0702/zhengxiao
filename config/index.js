@@ -3,7 +3,9 @@
 // see http://vuejs-templates.github.io/webpack for documentation.
 const root = process.env.API_ROOT
 const path = require('path')
-console.log(process.env.NODE_ENV);
+// console.log(process.env.NODE_ENV);
+const config = require("./config");  //路径你们改下
+console.log(config.PROXYROOT);
 module.exports = {
   dev: {
 
@@ -12,9 +14,11 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/zxiao':{
-        target:'http://www.yame.club',
+        target:config.PROXYROOT,
         changeOrigin:true,
-        pathRewrite: {'^/zxiao':''}
+        pathRewrite: {
+          [`^${config.ROOT}`]: '' ,  //需要rewrite的
+        }
       }
     },
 

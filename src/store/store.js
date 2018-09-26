@@ -2,6 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import axios from 'axios'
 Vue.use(Vuex)
+// const baseURL = process.env.API_ROOT
 
 export default new Vuex.Store({
     state : {  
@@ -73,7 +74,7 @@ export default new Vuex.Store({
     actions : {  
         //获取分页数据列表
         getPageList({ commit, state, getters, rootGetters }){
-            return axios.get('/API/findZxiaoAll', {  //axios本身就直接可以调用promise方法
+            return axios.get('/zxiao/API/findZxiaoAll', {  //axios本身就直接可以调用promise方法
                 params: {
                     page:state.page_list.page,
                     rows:state.page_list.rows
@@ -82,7 +83,7 @@ export default new Vuex.Store({
         },
         //根据id查询获取详情页数据
         getDetailList({ commit, state, getters, rootGetters }){
-            return axios.get('/API/zxiao', {
+            return axios.get('/zxiao/API/zxiao', {
                 params: {
                     id:state.page_list.id
                 }
@@ -90,7 +91,7 @@ export default new Vuex.Store({
         },
         //搜索数据
         getSearchList({ commit, state, getters, rootGetters }){
-            return axios.get('/API/zxiao/QueryByTitle', {
+            return axios.get('/zxiao/API/zxiao/QueryByTitle', {
                 params: {
                     page:state.page_list.page,
                     rows:state.page_list.rows,
