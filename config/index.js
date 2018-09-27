@@ -16,7 +16,7 @@ module.exports = {
         target:config.PROXYROOT,
         changeOrigin:true,
         pathRewrite: {
-          '^/api': '',  //需要rewrite的
+          '^/zxiao': '',  //需要rewrite的
         }
       }
     },
