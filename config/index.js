@@ -8,8 +8,7 @@ const config = require("./config");  //路径你们改下
 console.log(config.PROXYROOT);
 module.exports = {
   dev: {
-
-    // Paths
+    // Paths   [`^/${config.ROOT}`]: ''
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
@@ -17,7 +16,7 @@ module.exports = {
         target:config.PROXYROOT,
         changeOrigin:true,
         pathRewrite: {
-          [`^${config.ROOT}`]: '' ,  //需要rewrite的
+          '^/api': '',  //需要rewrite的
         }
       }
     },
