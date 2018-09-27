@@ -8,12 +8,12 @@ const config = require("./config");  //路径你们改下
 console.log(config.PROXYROOT);
 module.exports = {
   dev: {
-    // Paths   [`^/${config.ROOT}`]: ''
+    // Paths   [`^/${config.ROOT}`]: ''  config.PROXYROOT
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
       '/zxiao':{
-        target:config.PROXYROOT,
+        target: 'http://www.yame.club',
         changeOrigin:true,
         pathRewrite: {
           '^/zxiao': '',  //需要rewrite的
