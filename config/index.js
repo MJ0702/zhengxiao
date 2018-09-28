@@ -12,15 +12,15 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/zxiao':{
-        target: 'http://www.yame.club',
-        changeOrigin:true,
-        pathRewrite: {
-          '^/zxiao': '',  //需要rewrite的
-        }
-      }
+      '/zxiao': {    //将www.exaple.com印射为/apis
+          target: config.PROXYROOT,  // 接口域名
+          secure: false,  // 如果是https接口，需要配置这个参数
+          changeOrigin: true,  //是否跨域
+          pathRewrite: {
+              '^/zxiao': ''   //需要rewrite的,
+          }              
+      },
     },
-
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined

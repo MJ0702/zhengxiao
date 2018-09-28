@@ -112,7 +112,8 @@ export default {
           window.scrollTo(0,0);
         }else{
           this.$store.commit('change_page_show_params',false);
-          if (error.response) {
+          console.log(res);
+          if (error && error.response) {
             // 请求已发出，但服务器响应的状态码不在 2xx 范围内
             if(error.response.status == 404){
               this.$store.commit('change_error_show_params',true);
@@ -143,7 +144,7 @@ export default {
           window.scrollTo(0,0);
         }else{
           model.page_show = false;
-          if (error.response) {
+          if ( error.response) {
             // 请求已发出，但服务器响应的状态码不在 2xx 范围内
             if(error.response.status == 404){
                 this.$store.commit('change_error_show_params',true);
