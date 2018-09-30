@@ -5,25 +5,25 @@ const root = process.env.API_ROOT
 const path = require('path')
 // console.log(process.env.NODE_ENV);
 const config = require("./config"); 
-console.log(config.PROXYROOT);
+// console.log(config.PROXYROOT);
 module.exports = {
   dev: {
     // Paths   [`^/${config.ROOT}`]: ''  config.PROXYROOT
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     // proxyTable: {
-    //   '/api': {    //将www.yame.club印射为/apis
-    //       target: 'http://www.yame.club:8080',  // 接口域名
+    //   '/zxiao': {    //将www.yame.club印射为/apis
+    //       target: 'http://www.yame.club:8081',  // 接口域名
     //       secure: false,  // 如果是https接口，需要配置这个参数
     //       changeOrigin: true,  //是否跨域
     //       pathRewrite: {
-    //           '^/api': ''   //需要rewrite的,
+    //           '^/zxiao': ''   //需要rewrite的,
     //       }              
     //   },
     // },
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST
-    port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: true,
